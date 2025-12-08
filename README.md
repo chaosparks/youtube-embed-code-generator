@@ -1,73 +1,75 @@
-# React + TypeScript + Vite
+# YouTube Embed Code Generator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based utility tool designed to create high-performance, responsive YouTube video embeds for blogs and websites. 
 
-Currently, two official plugins are available:
+This tool solves a common problem: embedding a standard YouTube iframe can significantly slow down page load times. This generator creates a static "poster" image with a custom play button overlay. The heavy YouTube player only loads when the user actually clicks the image.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## React Compiler
+*   **Automatic Thumbnail Extraction**: instantly fetches the highest resolution thumbnail from any YouTube URL.
+*   **Custom Play Button Generation**: 
+    *   Uses HTML5 Canvas to overlay a YouTube-style rounded rectangular play button.
+    *   Includes aesthetic touches like drop shadows, transparency, and correct aspect ratios.
+    *   **Privacy Focused**: All image processing happens in your browser. No images are sent to a server.
+*   **Downloadable Assets**: Generates a `.jpg` file with a timestamped filename for easy organization.
+*   **Responsive Embed Code**: Outputs clean HTML/CSS that maintains a 16:9 aspect ratio and handles the background image fallback gracefully.
+*   **Offline Capable**: Works entirely client-side after initial load.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+*   **Core**: React 19, TypeScript
+*   **Build Tool**: Vite
+*   **Styling**: Tailwind CSS
+*   **Icons**: Lucide React
+*   **Graphics**: Native Canvas API (2D Context)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📦 Installation & Setup
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+To run this project locally, follow these steps:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 1. Prerequisites
+Ensure you have [Node.js](https://nodejs.org/) (v18 or higher) installed.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 2. Installation
+
+```bash
+# Clone the repository (or download source)
+git clone <your-repo-url>
+cd youtube-embed-generator
+
+# Install dependencies
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 3. Running Development Server
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+Open your browser to the URL shown in the terminal (usually `http://localhost:5173`).
+
+## 📖 How to Use
+
+1.  **Input Video URL**: Paste the full URL of the YouTube video you want to embed (e.g., `https://www.youtube.com/watch?v=...`) into the first input field.
+2.  **Generate Image**: The tool will automatically fetch the thumbnail and render the play button overlay in the preview section.
+3.  **Download Image**: Click the **Download Image** button. Save the file (e.g., `youtube-poster-with-play-20231027-120000.jpg`) to your computer.
+4.  **Host the Image**: Upload this image to your blog's media library, an S3 bucket, or any image hosting service.
+5.  **Input Hosted URL**: Paste the direct URL of your uploaded image into the **Hosted Poster URL** field.
+6.  **Copy Code**: The tool generates the final HTML snippet. Click **Copy Code** and paste it into your website's HTML editor.
+
+## 🎨 Customization
+
+The generated HTML uses a CSS class `.video-container`. You can further customize the border radius or margins in the generated code block:
+
+```css
+.video-container {
+  /* ... */
+  border-radius: 12px; /* Change this value for different corner roundness */
+  margin: 20px 0;      /* Change spacing */
+}
+```
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
