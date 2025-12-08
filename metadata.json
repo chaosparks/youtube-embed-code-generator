@@ -1,0 +1,5 @@
+{
+  "name": "YouTube Embed Code Generator",
+  "description": "A tool to generate responsive YouTube embed HTML with custom poster images featuring a play button overlay.",
+  "requestFramePermissions": []
+}
