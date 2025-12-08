@@ -4,6 +4,10 @@ A React-based utility tool designed to create high-performance, responsive YouTu
 
 This tool solves a common problem: embedding a standard YouTube iframe can significantly slow down page load times. This generator creates a static "poster" image with a custom play button overlay. The heavy YouTube player only loads when the user actually clicks the image.
 
+![img](img/youtobe-embed-screen-1.png)
+
+![img](img/youtobe-embed-screen-2.png)
+
 ## 🚀 Features
 
 *   **Automatic Thumbnail Extraction**: instantly fetches the highest resolution thumbnail from any YouTube URL.
