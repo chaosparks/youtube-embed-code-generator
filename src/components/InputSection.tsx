@@ -1,5 +1,5 @@
 import React from 'react';
-import { Youtube, Link, Image as ImageIcon } from 'lucide-react';
+import { Youtube, Link} from 'lucide-react';
 
 interface InputSectionProps {
   videoUrl: string;
