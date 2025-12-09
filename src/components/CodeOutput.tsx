@@ -4,9 +4,10 @@ import { Copy, Check } from 'lucide-react';
 interface CodeOutputProps {
   videoId: string | null;
   hostedImageUrl: string;
+  aspectRatio?: '16:9' | '9:16';
 }
 
-const CodeOutput: React.FC<CodeOutputProps> = ({ videoId, hostedImageUrl }) => {
+const CodeOutput: React.FC<CodeOutputProps> = ({ videoId, hostedImageUrl, aspectRatio = '16:9' }) => {
   const [copied, setCopied] = useState(false);
   const [code, setCode] = useState('');
 
@@ -18,17 +19,30 @@ const CodeOutput: React.FC<CodeOutputProps> = ({ videoId, hostedImageUrl }) => {
 
     const imageUrl = hostedImageUrl.trim() || 'YOUR_IMAGE_URL_HERE';
     
+    // Determine CSS values based on aspect ratio
+    // 16:9 = 56.25% padding
+    // 9:16 = 177.78% padding
+    const paddingBottom = aspectRatio === '9:16' ? '177.78%' : '56.25%';
+    
+    // For Shorts (vertical), we add a max-width to prevent it from being huge on desktop
+    // For Standard (horizontal), we usually let it take full width of container
+    const layoutStyles = aspectRatio === '9:16' 
+      ? 'max-width: 480px; margin: 20px auto;' 
+      : 'margin: 20px 0;';
+
+    const ratioComment = aspectRatio === '9:16' ? '9:16 Aspect Ratio (Shorts)' : '16:9 Aspect Ratio';
+
     // Generating the HTML string based on the user's requirements
     const htmlString = `<!-- YouTube Embed Start -->
 <style>
 .video-container {
   position: relative;
   width: 100%;
-  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  padding-bottom: ${paddingBottom}; /* ${ratioComment} */
   height: 0;
   overflow: hidden;
   border-radius: 12px;
-  margin: 20px 0;
+  ${layoutStyles}
   background-color: #000;
   background-image: url('${imageUrl}');
   background-size: cover;
@@ -57,7 +71,7 @@ const CodeOutput: React.FC<CodeOutputProps> = ({ videoId, hostedImageUrl }) => {
 <!-- YouTube Embed End -->`;
 
     setCode(htmlString);
-  }, [videoId, hostedImageUrl]);
+  }, [videoId, hostedImageUrl, aspectRatio]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(code);
@@ -91,7 +105,8 @@ const CodeOutput: React.FC<CodeOutputProps> = ({ videoId, hostedImageUrl }) => {
         </pre>
       </div>
       <p className="mt-2 text-xs text-gray-500">
-        Copy this code and paste it into your blog's HTML editor. The background image will show before the video loads or if the video is unavailable.
+        Copy this code and paste it into your blog's HTML editor. 
+        {aspectRatio === '9:16' && ' Since this is a Short, the code includes styles to center it and limit the width.'}
       </p>
     </div>
   );

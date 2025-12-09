@@ -1,25 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { getYouTubeID, getYouTubeThumbnail } from './utils/youtubeUtils';
+import { getYouTubeID, getYouTubeThumbnail, isShortsUrl } from './utils/youtubeUtils';
 import InputSection from './components/InputSection';
 import ThumbnailGenerator from './components/ThumbnailGenerator';
 import CodeOutput from './components/CodeOutput';
-import { Youtube, Layout } from 'lucide-react';
+import { Youtube, Layout, RotateCcw } from 'lucide-react';
 
 const App: React.FC = () => {
   const [videoUrl, setVideoUrl] = useState('');
   const [videoId, setVideoId] = useState<string | null>(null);
   const [hostedImageUrl, setHostedImageUrl] = useState('');
   const [thumbnailSource, setThumbnailSource] = useState<string | null>(null);
+  const [aspectRatio, setAspectRatio] = useState<'16:9' | '9:16'>('16:9');
 
   useEffect(() => {
     const id = getYouTubeID(videoUrl);
     setVideoId(id);
     if (id) {
       setThumbnailSource(getYouTubeThumbnail(id));
+      // Auto-detect Shorts and switch aspect ratio
+      if (isShortsUrl(videoUrl)) {
+        setAspectRatio('9:16');
+      } else {
+        setAspectRatio('16:9');
+      }
     } else {
       setThumbnailSource(null);
     }
   }, [videoUrl]);
+
+  const handleReset = () => {
+    setVideoUrl('');
+    setHostedImageUrl('');
+    setAspectRatio('16:9');
+    // videoId and thumbnailSource will be reset by the useEffect when videoUrl becomes empty
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -42,9 +56,19 @@ const App: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:divide-x divide-gray-200">
             {/* Left Column: Inputs */}
             <div className="p-6 lg:p-8 space-y-8 bg-white">
-              <div className="flex items-center space-x-2 mb-4">
-                <Layout className="w-5 h-5 text-indigo-600" />
-                <h2 className="text-lg font-semibold text-gray-900">Configuration</h2>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-2">
+                  <Layout className="w-5 h-5 text-indigo-600" />
+                  <h2 className="text-lg font-semibold text-gray-900">Configuration</h2>
+                </div>
+                <button
+                  onClick={handleReset}
+                  className="flex items-center px-3 py-1.5 text-xs font-medium text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50 hover:text-red-600 hover:border-red-300 transition-all focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-indigo-500"
+                  title="Reset all fields"
+                >
+                  <RotateCcw className="w-3.5 h-3.5 mr-1.5" />
+                  Reset
+                </button>
               </div>
               
               <InputSection 
@@ -52,6 +76,8 @@ const App: React.FC = () => {
                 setVideoUrl={setVideoUrl}
                 hostedImageUrl={hostedImageUrl}
                 setHostedImageUrl={setHostedImageUrl}
+                aspectRatio={aspectRatio}
+                setAspectRatio={setAspectRatio}
               />
               
               {/* Instructions Panel */}
@@ -77,6 +103,7 @@ const App: React.FC = () => {
               <CodeOutput 
                 videoId={videoId} 
                 hostedImageUrl={hostedImageUrl} 
+                aspectRatio={aspectRatio}
               />
             </div>
           </div>
