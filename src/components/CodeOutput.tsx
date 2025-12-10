@@ -44,9 +44,6 @@ const CodeOutput: React.FC<CodeOutputProps> = ({ videoId, hostedImageUrl, aspect
   border-radius: 12px;
   ${layoutStyles}
   background-color: #000;
-  background-image: url('${imageUrl}');
-  background-size: cover;
-  background-position: center;
 }
 
 .video-container iframe {
@@ -56,6 +53,9 @@ const CodeOutput: React.FC<CodeOutputProps> = ({ videoId, hostedImageUrl, aspect
   width: 100%;
   height: 100%;
   border: 0;
+  background-image: url('${imageUrl}');
+  background-size: cover;
+  background-position: center;
 }
 </style>
 
