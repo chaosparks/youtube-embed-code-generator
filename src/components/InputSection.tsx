@@ -90,11 +90,24 @@ const InputSection: React.FC<InputSectionProps> = ({
           </div>
           <input
             type="text"
-            className="block w-full rounded-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 py-3 border text-sm"
+            className={`block w-full rounded-md border-gray-300 pl-10 focus:border-indigo-500 focus:ring-indigo-500 py-3 border text-sm ${hostedImageUrl ? 'pr-16' : ''}`}
             placeholder="https://your-blog.com/images/my-thumbnail.jpg"
             value={hostedImageUrl}
             onChange={(e) => setHostedImageUrl(e.target.value)}
           />
+          {hostedImageUrl && (
+            <div className="absolute inset-y-0 right-0 flex items-center pr-2">
+              <img 
+                key={hostedImageUrl}
+                src={hostedImageUrl} 
+                alt="Valid" 
+                className="h-8 w-12 object-cover rounded border border-gray-200 bg-gray-50 shadow-sm"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = 'none';
+                }}
+              />
+            </div>
+          )}
         </div>
         <p className="mt-1 text-xs text-gray-500">
           Paste the URL of the image you downloaded and hosted. This will be used in the generated HTML code.
