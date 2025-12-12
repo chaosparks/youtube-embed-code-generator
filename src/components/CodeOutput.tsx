@@ -4,10 +4,11 @@ import { Copy, Check } from 'lucide-react';
 interface CodeOutputProps {
   videoId: string | null;
   hostedImageUrl: string;
+  defaultThumbnailUrl?: string | null;
   aspectRatio?: '16:9' | '9:16';
 }
 
-const CodeOutput: React.FC<CodeOutputProps> = ({ videoId, hostedImageUrl, aspectRatio = '16:9' }) => {
+const CodeOutput: React.FC<CodeOutputProps> = ({ videoId, hostedImageUrl, defaultThumbnailUrl, aspectRatio = '16:9' }) => {
   const [copied, setCopied] = useState(false);
   const [code, setCode] = useState('');
 
@@ -17,7 +18,8 @@ const CodeOutput: React.FC<CodeOutputProps> = ({ videoId, hostedImageUrl, aspect
       return;
     }
 
-    const imageUrl = hostedImageUrl.trim() || 'YOUR_IMAGE_URL_HERE';
+    // Use hosted URL if available, otherwise default to YouTube thumbnail, otherwise placeholder
+    const imageUrl = hostedImageUrl.trim() || defaultThumbnailUrl || 'YOUR_IMAGE_URL_HERE';
     
     // Determine CSS values based on aspect ratio
     // 16:9 = 56.25% padding
@@ -71,7 +73,7 @@ const CodeOutput: React.FC<CodeOutputProps> = ({ videoId, hostedImageUrl, aspect
 <!-- YouTube Embed End -->`;
 
     setCode(htmlString);
-  }, [videoId, hostedImageUrl, aspectRatio]);
+  }, [videoId, hostedImageUrl, defaultThumbnailUrl, aspectRatio]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(code);

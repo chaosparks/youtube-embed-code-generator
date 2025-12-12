@@ -103,6 +103,7 @@ const App: React.FC = () => {
               <CodeOutput 
                 videoId={videoId} 
                 hostedImageUrl={hostedImageUrl} 
+                defaultThumbnailUrl={thumbnailSource}
                 aspectRatio={aspectRatio}
               />
             </div>
